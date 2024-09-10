@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form with Hacker Theme Background</title>
+    <style>
+        /* Ensure canvas covers full screen */
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            
+        }
+
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Place it behind the content */
+        }
+
+        /* Contact Form Styling */
+        .contact-section {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            position: relative;
+        }
+
+        .contact-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .button-button{
+            display: flex;
+        }
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #3149e1;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: hsl(191, 96%, 49%);
+        }
+
+        #statusMessage {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+      
+    </style>
+</head>
+<body>
+
+
+<!-- Canvas for the background animation -->
+<canvas id="background-canvas"></canvas>
+
+<div class="contact-section">
+    <h2>Contact Me</h2>
+    <form   id="contactForm"  action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="f878c7da-2f33-4b31-a836-1ec8ab5b3224">
+        <div class="input-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter Your Name" required >
+        </div>
+       
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter Your Email" required>
+        </div>
+        
+        <div class="input-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="Subject" >
+        </div>
+
+        <div class="input-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Write Your Message Here... " rows="5" required></textarea>
+        </div>
+
+        <!--
+        <div class="input-group">
+            <label for="message">Upload Photo (.jpg or .png)</label>
+            <input type="file" id="attachment" name="attachment"  accept=".jpg, .png" multiple />
+        </div>
+        -->
+
+        <div class="button-button">
+            <button type="submit" class="submit-button">Send Message</button>
+             <button type="reset" class="submit-button">Reset</button>
+        </div>
+        
+        <div id="statusMessage"></div>
+    </form>
+</div>
+
+
+
+
+ <!--JavaScript for background animation-->
+ 
+<script>
+    // JavaScript program to create a live hacker theme effect with random falling characters
+
+    // Get the canvas element and its 2D drawing context
+    const canvas = document.getElementById('background-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set the canvas to full screen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Define the characters to use in the falling effect
+    const letters = 'AKASH THARU akash 424';
+    const lettersArray = letters.split('');
+
+    // Set font size and columns based on screen width
+    const fontSize = 12;
+    const columns = canvas.width / fontSize;
+
+    // Array to hold the Y coordinate of the drops
+    const drops = [];
+
+    // Initialize the drops array with zeros
+    for (let i = 0; i < columns; i++) {
+        drops[i] = 0;
+    }
+
+    // Function to draw the characters
+    function draw() {
+        // Set the background color with opacity to create a fading trail effect
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Set the color and font for the characters
+        ctx.fillStyle = '#0F0'; // Green color for the characters
+        ctx.font = `${fontSize}px monospace`; // Use a monospace font for a hacker-like appearance
+
+        // Loop through the drops array
+        for (let i = 0; i < drops.length; i++) {
+            // Select a random character from the letters array
+            const text = lettersArray[Math.floor(Math.random() * lettersArray.length)];
+
+            // Draw the character at the current drop position
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            // Reset drop to the top randomly or move the drop down
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.98765421) {
+                drops[i] = 0;
+            }
+
+            // Move the drop down
+            drops[i]++;
+        }
+    }
+
+    // Function to continuously draw the falling characters
+    setInterval(draw, 15); // Run the draw function every 33 milliseconds
+
+    // Adjust the canvas size when the window is resized
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+ </script>
+
+
+  
+
+</body>
+</html>
